@@ -1,0 +1,208 @@
+import time
+
+clientes = []
+atividades = []
+recompensas = []
+
+atividades_predefinidas = {
+    "Reciclagem de materiais": 20,
+    "Coleta seletiva": 20,
+    "Reutilização de água da chuva": 30,
+    "Consumo de alimentos orgânicos": 15,
+    "Uso de bicicletas": 10,
+    "Evitar o uso de plástico descartável": 25,
+    "Reflorestamento e plantio de árvores": 40,
+    "Descarte correto de pilhas": 50,
+    "Uso de lâmpadas LED": 5,
+    "Redução do desperdício de água e energia": 15,
+    "Uso de transporte público": 15,
+}
+
+def cadastrar_cliente():
+    nome = input("Digite o nome do cliente: ")
+    email = input("Digite o email do cliente: ")
+    cliente = {"nome": nome, "email": email, "metas": [], "pontos": 0, "atividades_realizadas": 0}
+    clientes.append(cliente)
+    print(f"Cliente {nome} cadastrado com sucesso!\n")
+    time.sleep(2)
+
+def registrar_atividade():
+    nome_cliente = input("Digite o nome do cliente: ")
+    time.sleep(0.5)
+
+
+    print("\nEscolha uma atividade sustentável realizada:")
+    for i, (atividade, pontos) in enumerate(atividades_predefinidas.items(), 1):
+        print(f"{i}. {atividade} (Vale {pontos} pontos)")
+
+    while True:
+        try:
+            escolha = int(input("\nDigite o número da atividade escolhida ou 0 para outra: "))
+            if escolha == 0:
+                atividade = input("Digite o nome da atividade sustentável: ")
+                pontos = int(input("Quantos pontos a atividade vale? "))
+            elif 1 <= escolha <= len(atividades_predefinidas):
+                atividade = list(atividades_predefinidas.keys())[escolha - 1]
+                pontos = atividades_predefinidas[atividade]
+            else:
+                print("Escolha inválida! Tente novamente.")
+                continue
+            break
+        except ValueError:
+            print("Entrada inválida! Insira um número válido.")
+
+    while True:
+        try:
+            quantidade = int(input("Quantas vezes essa atividade foi realizada? "))
+            break
+        except ValueError:
+            print("Por favor, insira um número válido para a quantidade.")
+
+    for cliente in clientes:
+        if cliente["nome"] == nome_cliente:
+            cliente["pontos"] += pontos * quantidade
+            cliente["atividades_realizadas"] += quantidade
+            atividades.append({"cliente": nome_cliente, "atividade": atividade, "pontos": pontos, "quantidade": quantidade})
+            print(f"Atividade '{atividade}' registrada para {nome_cliente}!\n")
+
+            metas = cliente["metas"]
+            total_atividades = cliente["atividades_realizadas"]
+
+            if "Realizar 10 atividades sustentáveis" in metas and total_atividades >= 10:
+                recompensa = f"Parabéns {nome_cliente}, você completou sua meta de 10 atividades sustentáveis e ganhou 20 pontos extras!"
+                cliente["pontos"] += 20
+                metas.remove("Realizar 10 atividades sustentáveis")
+                recompensas.append(recompensa)
+                print(recompensa)
+
+            if "Realizar 20 atividades sustentáveis" in metas and total_atividades >= 20:
+                recompensa = f"Parabéns, {nome_cliente}! Você completou 20 atividades sustentáveis e ganhou 50 pontos extras!"
+                cliente["pontos"] += 50
+                metas.remove("Realizar 20 atividades sustentáveis")
+                recompensas.append(recompensa)
+                print(recompensa)
+
+            if "Realizar 30 atividades sustentáveis" in metas and total_atividades >= 30:
+                recompensa = f"Parabéns, {nome_cliente}! Você completou 30 atividades sustentáveis e ganhou 100 pontos extras!"
+                cliente["pontos"] += 100
+                metas.remove("Realizar 30 atividades sustentáveis")
+                recompensas.append(recompensa)
+                print(recompensa)
+
+            time.sleep(2)
+            return
+    print("Cliente não encontrado!\n")
+
+def criar_meta():
+    nome_cliente = input("Digite o nome do cliente: ")
+    for cliente in clientes:
+        if cliente["nome"] == nome_cliente:
+            print("Escolha uma meta:")
+            print("1. Realizar 10 atividades sustentáveis (20 pontos)")
+            print("2. Realizar 20 atividades sustentáveis (50 pontos)")
+            print("3. Realizar 30 atividades sustentáveis (100 pontos)")
+            opcao_meta = input("Digite o número da meta desejada: ")
+
+            if opcao_meta == "1":
+                meta = "Realizar 10 atividades sustentáveis"
+            elif opcao_meta == "2":
+                meta = "Realizar 20 atividades sustentáveis"
+            elif opcao_meta == "3":
+                meta = "Realizar 30 atividades sustentáveis"
+            else:
+                print("Opção inválida!\n")
+                return
+
+            cliente["metas"].append(meta)
+            print(f"Meta adicionada para {nome_cliente}: {meta}\n")
+            time.sleep(2)
+            return
+    print("Cliente não encontrado!\n")
+
+def listar_clientes():
+    if clientes:
+        print("\n////// Lista de Clientes ////// ")
+        for cliente in clientes:
+            print(f"Nome: {cliente['nome']}, Email: {cliente['email']}, Pontos: {cliente['pontos']}, Atividades realizadas: {cliente['atividades_realizadas']}")
+            print("Metas:", cliente["metas"])
+    else:
+        print("Não há clientes cadastrados.\n")
+    time.sleep(2)
+
+def listar_atividades():
+    if atividades:
+        print("\n////// Lista de Atividades //////")
+        for atividade in atividades:
+            print(f"Cliente: {atividade['cliente']}, Atividade: {atividade['atividade']}, Pontos: {atividade['pontos']}, Quantidade: {atividade['quantidade']}")
+    else:
+        print("Não há atividades registradas.\n")
+    time.sleep(2)
+
+def excluir_cliente():
+    nome_cliente = input("Digite o nome do cliente que deseja excluir: ")
+    for cliente in clientes:
+        if cliente["nome"] == nome_cliente:
+            clientes.remove(cliente)
+            print(f"Cliente {nome_cliente} excluído com sucesso!\n")
+            return
+    print("Cliente não encontrado!\n")
+    time.sleep(2)
+
+def excluir_atividade():
+    nome_cliente = input("Digite o nome do cliente para excluir uma atividade: ")
+    for atividade in atividades:
+        if atividade["cliente"] == nome_cliente:
+            atividades.remove(atividade)
+            print(f"Atividade de {nome_cliente} excluída com sucesso!\n")
+            return
+    print("Atividade não encontrada!\n")
+    time.sleep(2)
+
+def simular_recompensas():
+    for cliente in clientes:
+        if cliente["pontos"] >= 350:8
+        recompensa = f"Parabéns, {cliente['nome']}! Você pode resgatar R$ 50,00!"
+        recompensas.append(recompensa)
+        print(recompensa)
+        time.sleep(1)
+    else:
+        print(f"{cliente['nome']} ainda não tem pontos suficientes. Continue realizando atividades!")
+    time.sleep(2)
+
+def menu():
+    while True:
+        print("\n////// GREEN MONEY //////")
+        print("1. Cadastrar novo cliente")
+        print("2. Registrar atividades sustentáveis")
+        print("3. Criar meta personalizada para o cliente")
+        print("4. Lista de clientes")
+        print("5. Lista de atividades")
+        print("6. Excluir cliente")
+        print("7. Excluir atividade")
+        print("8. Simulador de recompensas")
+        print("9. Sair")
+
+        opcao = input("Escolha uma opção: ")
+        if opcao == "1":
+            cadastrar_cliente()
+        elif opcao == "2":
+            registrar_atividade()
+        elif opcao == "3":
+            criar_meta()
+        elif opcao == "4":
+            listar_clientes()
+        elif opcao == "5":
+            listar_atividades()
+        elif opcao == "6":
+            excluir_cliente()
+        elif opcao == "7":
+            excluir_atividade()
+        elif opcao == "8":
+            simular_recompensas()
+        elif opcao == "9":
+            print("Saindo do aplicativo, até outro dia!")
+            break
+        else:
+            print("Opção não reconhecida; Tente novamente.\n")
+
+menu()
