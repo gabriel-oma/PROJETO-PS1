@@ -1,4 +1,7 @@
 import time
+from colorama import Fore, Style, init
+
+init()
 
 usuarios = []
 atividades = []
@@ -30,30 +33,30 @@ def cadastrar_usuario():
     username = input("Digite o username do usuário: ")
     email = input("Digite o email do usuário: ")
     if any(user['username'] == username for user in usuarios):
-        print("Usuário já cadastrado!\n")
+        print(Fore.RED + "Usuário já cadastrado!\n" + Style.RESET_ALL)
         return
     if any(user['email'] == email for user in usuarios):
-        print("Email já cadastrado!\n")
+        print(Fore.RED + "Email já cadastrado!\n" + Style.RESET_ALL)
         return
     usuarios.append({"username": username, "email": email, "pontos": 0, "atividades_realizadas": 0})
-    print(f"Usuário {username} cadastrado com sucesso!\n")
+    print(Fore.GREEN + f"Usuário {username} cadastrado com sucesso!\n" + Style.RESET_ALL)
     time.sleep(1)
 
 def excluir_usuario():
     username = input("Digite o username do usuário que deseja excluir: ")
     global usuarios
     usuarios = [u for u in usuarios if u['username'] != username]
-    print(f"Usuário {username} excluído com sucesso!\n")
+    print(Fore.GREEN + f"Usuário {username} excluído com sucesso!\n" + Style.RESET_ALL)
     time.sleep(1)
 
 def registrar_atividade():
     username = input("Digite o username do usuário: ")
     usuario = next((u for u in usuarios if u['username'] == username), None)
     if not usuario:
-        print("Usuário não encontrado!\n")
+        print(Fore.RED + "Usuário não encontrado!\n" + Style.RESET_ALL)
         return
     
-    print("\nEscolha uma atividade sustentável realizada:")
+    print(Fore.CYAN + "\nEscolha uma atividade sustentável realizada:" + Style.RESET_ALL)
     for i, (atividade, pontos) in enumerate(atividades_predefinidas.items(), 1):
         print(f"{i}. {atividade} ({pontos} pontos)")
     
@@ -66,55 +69,55 @@ def registrar_atividade():
             atividade = list(atividades_predefinidas.keys())[escolha - 1]
             pontos = atividades_predefinidas[atividade]
     except (ValueError, IndexError):
-        print("Opção inválida!\n")
+        print(Fore.RED + "Opção inválida!\n" + Style.RESET_ALL)
         return
     
     try:
         quantidade = int(input("Quantas vezes essa atividade foi realizada? "))
     except ValueError:
-        print("Número inválido!\n")
+        print(Fore.RED + "Número inválido!\n" + Style.RESET_ALL)
         return
     
     usuario["pontos"] += pontos * quantidade
     usuario["atividades_realizadas"] += quantidade
     atividades.append({"usuario": username, "atividade": atividade, "pontos": pontos, "quantidade": quantidade})
-    print(f"Atividade '{atividade}' registrada para {username}!\n")
+    print(Fore.GREEN + f"Atividade '{atividade}' registrada para {username}!\n" + Style.RESET_ALL)
     time.sleep(1)
 
 def excluir_atividade():
     username = input("Digite o username do usuário para excluir uma atividade: ")
     global atividades
     atividades = [a for a in atividades if a['usuario'] != username]
-    print(f"Atividade de {username} excluída com sucesso!\n")
+    print(Fore.GREEN + f"Atividade de {username} excluída com sucesso!\n" + Style.RESET_ALL)
     time.sleep(1)
 
 def listar_usuarios():
     if usuarios:
-        print("\n////// Lista de Usuários //////")
+        print(Fore.CYAN + "\n////// Lista de Usuários //////" + Style.RESET_ALL)
         for usuario in usuarios:
             print(f"Username: {usuario['username']}, Email: {usuario['email']}, Pontos: {usuario['pontos']}, Atividades realizadas: {usuario['atividades_realizadas']}")
     else:
-        print("Não há usuários cadastrados.\n")
+        print(Fore.YELLOW + "Não há usuários cadastrados.\n" + Style.RESET_ALL)
     time.sleep(2)
 
 def listar_atividades():
     if atividades:
-        print("\n////// Lista de Atividades //////")
+        print(Fore.CYAN + "\n////// Lista de Atividades //////" + Style.RESET_ALL)
         for atividade in atividades:
             print(f"Usuário: {atividade['usuario']}, Atividade: {atividade['atividade']}, Pontos: {atividade['pontos']}, Quantidade: {atividade['quantidade']}")
     else:
-        print("Não há atividades registradas.\n")
+        print(Fore.YELLOW + "Não há atividades registradas.\n" + Style.RESET_ALL)
     time.sleep(2)
 
 def opcoes_atividades_sustentaveis():
-    print("\n////// Opções de Atividades Sustentáveis //////")
+    print(Fore.CYAN + "\n////// Opções de Atividades Sustentáveis //////" + Style.RESET_ALL)
     for atividade, pontos in atividades_predefinidas.items():
         print(f"- {atividade}: {pontos} pontos")
-    print("\nEssas são as atividades disponíveis para registrar!")
+    print(Fore.GREEN + "\nEssas são as atividades disponíveis para registrar!" + Style.RESET_ALL)
     time.sleep(2)
 
 def dicas_para_recompensas():
-    print("\n////// Dicas para Conseguir Mais Recompensas //////")
+    print(Fore.CYAN + "\n////// Dicas para Conseguir Mais Recompensas //////" + Style.RESET_ALL)
     dicas = [
         ("Reciclagem de materiais", "Separe resíduos recicláveis e leve-os a pontos de coleta."),
         ("Reutilização de água da chuva", "Instale um sistema para reutilizar água da chuva em casa."),
@@ -123,34 +126,56 @@ def dicas_para_recompensas():
     ]
     for atividade, dica in dicas:
         print(f"\n- {atividade}: {dica}")
-    print("\nSiga essas dicas e registre suas atividades para acumular mais pontos!")
+    print(Fore.GREEN + "\nSiga essas dicas e registre suas atividades para acumular mais pontos!" + Style.RESET_ALL)
     time.sleep(2)
 
 def ranking():
-    print("\n////// Ranking de Usuários //////")
+    print(Fore.CYAN + "\n////// Ranking de Usuários //////" + Style.RESET_ALL)
     ranking_usuarios = sorted(usuarios, key=lambda x: x['pontos'], reverse=True)
     for i, usuario in enumerate(ranking_usuarios, 1):
         print(f"{i}. {usuario['username']} - {usuario['pontos']} pontos")
     time.sleep(1)
 
+def ajuda():
+    print(Fore.CYAN + "\n////// Ajuda //////" + Style.RESET_ALL)
+    print("1. Cadastre usuários para começar.")
+    print("2. Registre atividades sustentáveis para acumular pontos.")
+    print("3. Resgate recompensas com seus pontos.")
+    print("4. Use o ranking para ver quem tem mais pontos.")
+    print("5. Consulte as dicas para ganhar mais pontos.")
+    print("6. Use o menu para navegar entre as opções.")
+    time.sleep(2)
+
 def menu():
     while True:
-        print("\n/////// GREEN MONEY ///////")
-        print("1. Cadastrar novo usuário")
+        print(Fore.BLUE + "\n/////// GREEN MONEY ///////" + Style.RESET_ALL)
+        print(Fore.CYAN + "1. Cadastrar novo usuário")
         print("2. Registrar atividades sustentáveis")
         print("3. Excluir usuário")
         print("4. Excluir atividade")
         print("5. Lista de usuários")
         print("6. Lista de atividades")
         print("7. Opções de atividades sustentáveis")
-        print("8. Simulador de recompensas")
-        print("9. Dicas para ganhar mais recompensas")
-        print("10. Ranking de usuários")
-        print("11. Sair")
+        print("8. Dicas para ganhar mais recompensas")
+        print("9. Ranking de usuários")
+        print("10. Ajuda")
+        print(Fore.RED + "11. Sair" + Style.RESET_ALL)
         opcao = input("Escolha uma opção: ")
         if opcao == "11":
+            print(Fore.YELLOW + "Saindo do programa..." + Style.RESET_ALL)
             break
-        opcoes = {"1": cadastrar_usuario, "2": registrar_atividade, "3": excluir_usuario, "4": excluir_atividade, "5": listar_usuarios, "6": listar_atividades, "7": opcoes_atividades_sustentaveis, "8": ranking, "9": dicas_para_recompensas, "10": ranking}
-        opcoes.get(opcao, lambda: print("Opção inválida"))()
+        opcoes = {
+            "1": cadastrar_usuario,
+            "2": registrar_atividade,
+            "3": excluir_usuario,
+            "4": excluir_atividade,
+            "5": listar_usuarios,
+            "6": listar_atividades,
+            "7": opcoes_atividades_sustentaveis,
+            "8": dicas_para_recompensas,
+            "9": ranking,
+            "10": ajuda,
+        }
+        opcoes.get(opcao, lambda: print(Fore.RED + "Opção inválida" + Style.RESET_ALL))()
 
 menu()
