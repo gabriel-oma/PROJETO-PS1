@@ -1,4 +1,6 @@
 import time
+import random
+import re
 
 usuarios = []
 atividades = []
@@ -8,7 +10,6 @@ atividades_predefinidas = {
     "Coleta seletiva": 20,
     "Reutilização de água da chuva": 30,
     "Consumo de alimentos orgânicos": 15,
-    "Uso de bicicletas": 10,
     "Evitar o uso de plástico descartável": 25,
     "Reflorestamento e plantio de árvores": 40,
     "Descarte correto de pilhas": 50,
@@ -26,15 +27,61 @@ recompensas = [
     (1000, "Gift Card de R$ 150,00 ou assinatura em serviços ecológicos"),
 ]
 
+niveles = [100, 250, 500, 1000]
+
+def gerar_codigo():
+    return random.randint(100000, 999999)
+
+def enviar_notificacao(usuario, mensagem):
+    print(f"\n[NOTIFICAÇÃO] Para {usuario['username']}: {mensagem}\n")
+
+def verificar_notificacoes(usuario):
+    for nivel in niveles:
+        if usuario['pontos'] >= nivel:
+            enviar_notificacao(usuario, f"Parabéns! Você atingiu {nivel} pontos e subiu de nível!")
+            niveles.remove(nivel)
+            break
+    for pontos, recompensa in recompensas:
+        if usuario['pontos'] >= pontos:
+            enviar_notificacao(usuario, f"Você pode resgatar uma recompensa: {recompensa}")
+            break
+def validar_senha(senha):
+    if (
+        len(senha) < 4 or len(senha) > 15  
+        or not re.search(r"[a-zA-Z0-9]{3,}", senha) 
+        or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", senha)  
+    ):
+        return False
+    return True
+
 def cadastrar_usuario():
     username = input("Digite o username do usuário: ")
     email = input("Digite o email do usuário: ")
+    
+    while True:
+        senha = input("Digite uma senha (4-15 caracteres, 3 letras/números e 1 caractere especial): ")
+        if validar_senha(senha):
+            break
+        print("Erro: A senha deve ter entre 4 e 15 caracteres, conter pelo menos 3 letras/números e um caractere especial!")
+    
     for user in usuarios:
-        if user['username'] == username or user['email'] == email:
-            print("Usuário ou email já cadastrado!\n")
+        if user['username'] == username:
+            print("Erro: Nome de usuário já cadastrado!")
             return
-    usuarios.append({"username": username, "email": email, "pontos": 0, "atividades_realizadas": 0})
-    print(f"Usuário {username} cadastrado com sucesso!\n")
+        if user['email'] == email:
+            print("Erro: Email já cadastrado!")
+            return
+    
+    codigo = gerar_codigo()
+    print(f"Código de verificação enviado para {email}: {codigo}")
+    codigo_digitado = input("Digite o código de verificação recebido: ")
+    
+    if str(codigo_digitado) != str(codigo):
+        print("Erro: Código de verificação incorreto!")
+        return
+    
+    usuarios.append({"username": username, "email": email, "senha": senha, "pontos": 0, "atividades_realizadas": 0})
+    print(f"Usuário {username} cadastrado com sucesso!")
     time.sleep(1)
 
 def excluir_usuario():
@@ -77,6 +124,8 @@ def registrar_atividade():
     usuario["atividades_realizadas"] += quantidade
     atividades.append({"usuario": username, "atividade": atividade, "pontos": pontos, "quantidade": quantidade})
     print(f"Atividade '{atividade}' registrada para {username}!\n")
+    
+    verificar_notificacoes(usuario)
     time.sleep(1)
 
 def excluir_atividade():
@@ -112,12 +161,17 @@ def ranking():
     time.sleep(1)
 
 def ajuda():
-    print("\n////// Ajuda //////")
-    print("1. Cadastre usuários para começar.")
-    print("2. Registre atividades sustentáveis para acumular pontos.")
-    print("3. Resgate recompensas com seus pontos.")
-    print("4. Use o ranking para ver quem tem mais pontos.")
-    print("5. Use o menu para navegar entre as opções.")
+    print("\n////// AJUDA //////")
+    print("1. Cadastrar novo usuário: Permite criar um perfil com email e senha.")
+    print("2. Registrar atividades sustentáveis: Acumule pontos ao realizar ações ecológicas.")
+    print("3. Excluir usuário: Remove um usuário do sistema.")
+    print("4. Excluir atividade: Remove uma atividade registrada por um usuário.")
+    print("5. Lista de usuários: Exibe todos os usuários cadastrados e seus pontos.")
+    print("6. Lista de atividades: Mostra todas as atividades registradas.")
+    print("7. Ranking de usuários: Classificação dos usuários com mais pontos.")
+    print("8. Ajuda: Exibe informações sobre o sistema e como utilizá-lo.")
+    print("9. Resgatar recompensa: Troque seus pontos por benefícios sustentáveis.")
+    print("10. Sair: Encerra o programa.")
     time.sleep(2)
 
 def resgatar_recompensa():
