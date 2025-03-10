@@ -2,19 +2,20 @@ Green Money é um sistema de gamificação que incentiva a prática de atividade
 
 FUNCIONALIDADES
 
-1.Cadastro de usuários com verificação por código.
+1. Cadastro de usuários com verificação por código.
 
-2.Registro de atividades sustentáveis e acúmulo de pontos.
+2. Registro de atividades sustentáveis e acúmulo de pontos.
 
-3.Exclusão de usuários e atividades.
+3. Exclusão de usuários e atividades.
 
-4.Listagem de usuários e atividades cadastradas.
+4. Listagem de usuários e atividades cadastradas.
 
-5.Ranking de usuários baseado nos pontos acumulados.
+5. Ranking de usuários baseado nos pontos acumulados.
 
-6.Sistema de recompensas baseado na quantidade de pontos.
+6. Sistema de recompensas baseado na quantidade de pontos.
 
-7.Notificações automáticas para usuários ao atingirem novos níveis ou desbloquearem recompensas.
+7. Notificações automáticas para usuários ao atingirem novos níveis ou desbloquearem recompensas.
+
 
 COMO UTILIZAR:
 
@@ -55,6 +56,7 @@ Ranking de usuários exibe os usuários ordenados por pontuação.
 5) Resgatar recompensas
 
 Resgatar recompensa permite trocar pontos acumulados por prêmios.
+
 
 Sair do programa
 
