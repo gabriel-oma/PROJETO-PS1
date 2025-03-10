@@ -62,7 +62,8 @@ Sair do programa
 
 10. Sair encerra a execução do sistema.
 
-Estrutura do Código
+
+ESTRUTURA DO CÓDIGO
 
 O sistema está estruturado em diferentes funções para modularidade e facilidade de manutenção:
 
@@ -80,6 +81,6 @@ resgatar_recompensa(): Permite a troca de pontos por recompensas.
 
 menu(): Controla a interação do usuário no terminal.
 
-Requisitos
+REQUISITOS
 
 Python 3.x
