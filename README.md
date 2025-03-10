@@ -19,6 +19,7 @@ FUNCIONALIDADES
 COMO UTILIZAR:
 
 Executar o programa:
+
 O sistema é executado no terminal. Basta rodar o script Python para iniciar o menu interativo.
 
 1) Cadastrar um novo usuário:
@@ -47,7 +48,7 @@ Lista de usuários exibe todos os usuários cadastrados e seus pontos.
 
 Lista de atividades exibe todas as atividades registradas.
 
-4)Consultar ranking de usuários
+4) Consultar ranking de usuários
 
 Ranking de usuários exibe os usuários ordenados por pontuação.
 
@@ -56,6 +57,7 @@ Ranking de usuários exibe os usuários ordenados por pontuação.
 Resgatar recompensa permite trocar pontos acumulados por prêmios.
 
 Sair do programa
+
 10. Sair encerra a execução do sistema.
 
 Estrutura do Código
