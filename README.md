@@ -63,6 +63,7 @@ Sair do programa
 10. Sair encerra a execução do sistema.
 
 
+
 ESTRUTURA DO CÓDIGO
 
 O sistema está estruturado em diferentes funções para modularidade e facilidade de manutenção:
@@ -80,6 +81,8 @@ ranking(): Exibe o ranking de usuários.
 resgatar_recompensa(): Permite a troca de pontos por recompensas.
 
 menu(): Controla a interação do usuário no terminal.
+
+
 
 REQUISITOS
 
