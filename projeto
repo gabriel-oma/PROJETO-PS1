@@ -6,16 +6,16 @@ usuarios = []
 atividades = []
 
 atividades_predefinidas = {
-    "Reciclagem de materiais": 20,
-    "Coleta seletiva": 20,
-    "Reutilização de água da chuva": 30,
-    "Consumo de alimentos orgânicos": 15,
-    "Evitar o uso de plástico descartável": 25,
-    "Reflorestamento e plantio de árvores": 40,
-    "Descarte correto de pilhas": 50,
-    "Uso de lâmpadas LED": 5,
-    "Redução do desperdício de água e energia": 15,
-    "Uso de transporte público": 15,
+    1: ("Reciclagem de materiais", 20),
+    2: ("Coleta seletiva", 20),
+    3: ("Reutilização de água da chuva", 30),
+    4: ("Consumo de alimentos orgânicos", 15),
+    5: ("Evitar o uso de plástico descartável", 25),
+    6: ("Reflorestamento e plantio de árvores", 40),
+    7: ("Descarte correto de pilhas", 50),
+    8: ("Uso de lâmpadas LED", 5),
+    9: ("Redução do desperdício de água e energia", 15),
+    10: ("Uso de transporte público", 15),
 }
 
 recompensas = [
@@ -29,11 +29,14 @@ recompensas = [
 
 niveles = [100, 250, 500, 1000]
 
+
 def gerar_codigo():
     return random.randint(100000, 999999)
 
+
 def enviar_notificacao(usuario, mensagem):
     print(f"\n[NOTIFICAÇÃO] Para {usuario['username']}: {mensagem}\n")
+
 
 def verificar_notificacoes(usuario):
     for nivel in niveles:
@@ -45,44 +48,71 @@ def verificar_notificacoes(usuario):
         if usuario['pontos'] >= pontos:
             enviar_notificacao(usuario, f"Você pode resgatar uma recompensa: {recompensa}")
             break
+
+
 def validar_senha(senha):
     if (
-        len(senha) < 4 or len(senha) > 15  
-        or not re.search(r"[a-zA-Z0-9]{3,}", senha) 
-        or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", senha)  
+            len(senha) < 4 or len(senha) > 15
+            or not re.search(r"[a-zA-Z0-9]{3,}", senha)
+            or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", senha)
     ):
         return False
     return True
 
+
+def validar_email(email):
+
+    return bool(re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', email))
+
+
 def cadastrar_usuario():
-    username = input("Digite o username do usuário: ")
-    email = input("Digite o email do usuário: ")
-    
+    while True:
+        username = input("Digite o username do usuário: ").strip()
+        if not username:
+            print("Erro: O nome de usuário não pode estar vazio!")
+            continue
+        if any(user['username'] == username for user in usuarios):
+            print("Erro: Nome de usuário já cadastrado!")
+            continue
+        break
+
+    while True:
+        email = input("Digite o email do usuário: ").strip()
+        if not validar_email(email):
+            print("Erro: Email inválido! Certifique-se de incluir '@' e '.' e não deixá-lo vazio.")
+            continue
+        if any(user['email'] == email for user in usuarios):
+            print("Erro: Email já cadastrado!")
+            continue
+        break
+
     while True:
         senha = input("Digite uma senha (4-15 caracteres, 3 letras/números e 1 caractere especial): ")
         if validar_senha(senha):
             break
-        print("Erro: A senha deve ter entre 4 e 15 caracteres, conter pelo menos 3 letras/números e um caractere especial!")
-    
-    for user in usuarios:
-        if user['username'] == username:
-            print("Erro: Nome de usuário já cadastrado!")
-            return
-        if user['email'] == email:
-            print("Erro: Email já cadastrado!")
-            return
-    
-    codigo = gerar_codigo()
+        print(
+            "Erro: A senha deve ter entre 4 e 15 caracteres, conter pelo menos 3 letras/números e um caractere especial!")
+
+    codigo = random.randint(100000, 999999)
     print(f"Código de verificação enviado para {email}: {codigo}")
     codigo_digitado = input("Digite o código de verificação recebido: ")
-    
+
     if str(codigo_digitado) != str(codigo):
         print("Erro: Código de verificação incorreto!")
         return
-    
+
     usuarios.append({"username": username, "email": email, "senha": senha, "pontos": 0, "atividades_realizadas": 0})
     print(f"Usuário {username} cadastrado com sucesso!")
     time.sleep(1)
+
+def validar_senha(senha):
+    if (
+            len(senha) < 4 or len(senha) > 15
+            or not re.search(r"[a-zA-Z0-9]{3,}", senha)
+            or not re.search(r"[!@#$%^&*(),.?\":{}|<>]", senha)
+    ):
+        return False
+    return True
 
 def excluir_usuario():
     username = input("Digite o username do usuário que deseja excluir: ")
@@ -91,42 +121,56 @@ def excluir_usuario():
     print(f"Usuário {username} excluído com sucesso!\n")
     time.sleep(1)
 
+
 def registrar_atividade():
-    username = input("Digite o username do usuário: ")
-    usuario = next((u for u in usuarios if u['username'] == username), None)
+    if not usuarios:
+        print("Erro: Nenhum usuário cadastrado! Cadastre um usuário primeiro.\n")
+        return
+
+    username = input("Digite o username do usuário: ").strip().lower()
+    usuario = next((u for u in usuarios if u['username'].lower() == username), None)
     if not usuario:
         print("Usuário não encontrado!\n")
         return
-    
-    print("\nEscolha uma atividade sustentável realizada:")
-    for i, (atividade, pontos) in enumerate(atividades_predefinidas.items(), 1):
-        print(f"{i}. {atividade} ({pontos} pontos)")
-    
-    try:
-        escolha = int(input("\nDigite o número da atividade escolhida ou 0 para outra: "))
-        if escolha == 0:
-            atividade = input("Digite o nome da atividade sustentável: ")
-            pontos = 10
-        else:
-            atividade = list(atividades_predefinidas.keys())[escolha - 1]
-            pontos = atividades_predefinidas[atividade]
-    except (ValueError, IndexError):
-        print("Opção inválida!\n")
-        return
-    
-    try:
-        quantidade = int(input("Quantas vezes essa atividade foi realizada? "))
-    except ValueError:
-        print("Número inválido!\n")
-        return
-    
+
+    print("Escolha uma atividade sustentável da lista abaixo:")
+    for num, (nome, pontos) in atividades_predefinidas.items():
+        print(f"{num}. {nome} ({pontos} pontos)")
+
+    while True:
+        try:
+            opcao = int(input("Digite o número da atividade escolhida: "))
+            if opcao not in atividades_predefinidas:
+                print("Erro: Escolha uma opção válida!")
+                continue
+            atividade, pontos = atividades_predefinidas[opcao]
+            break
+        except ValueError:
+            print("Erro: Digite um número válido!")
+
+    while True:
+        try:
+            quantidade = int(input("Quantas vezes essa atividade foi realizada? "))
+            if quantidade <= 0:
+                print("Erro: A quantidade deve ser um número positivo maior que zero!")
+                continue
+            break
+        except ValueError:
+            print("Erro: Digite um número válido para a quantidade!")
+
     usuario["pontos"] += pontos * quantidade
     usuario["atividades_realizadas"] += quantidade
-    atividades.append({"usuario": username, "atividade": atividade, "pontos": pontos, "quantidade": quantidade})
+
+    atividades.append({
+        "usuario": usuario["username"],
+        "atividade": atividade,
+        "pontos": pontos * quantidade,
+        "quantidade": quantidade
+    })
+
     print(f"Atividade '{atividade}' registrada para {username}!\n")
-    
-    verificar_notificacoes(usuario)
     time.sleep(1)
+
 
 def excluir_atividade():
     username = input("Digite o username do usuário para excluir uma atividade: ")
@@ -135,23 +179,28 @@ def excluir_atividade():
     print(f"Atividade de {username} excluída com sucesso!\n")
     time.sleep(1)
 
+
 def listar_usuarios():
     if usuarios:
         print("\n////// Lista de Usuários //////")
         for usuario in usuarios:
-            print(f"Username: {usuario['username']}, Email: {usuario['email']}, Pontos: {usuario['pontos']}, Atividades realizadas: {usuario['atividades_realizadas']}")
+            print(
+                f"Username: {usuario['username']}, Email: {usuario['email']}, Pontos: {usuario['pontos']}, Atividades realizadas: {usuario['atividades_realizadas']}")
     else:
         print("Não há usuários cadastrados.\n")
     time.sleep(2)
+
 
 def listar_atividades():
     if atividades:
         print("\n////// Lista de Atividades //////")
         for atividade in atividades:
-            print(f"Usuário: {atividade['usuario']}, Atividade: {atividade['atividade']}, Pontos: {atividade['pontos']}, Quantidade: {atividade['quantidade']}")
+            print(
+                f"Usuário: {atividade['usuario']}, Atividade: {atividade['atividade']}, Pontos: {atividade['pontos']}, Quantidade: {atividade['quantidade']}")
     else:
         print("Não há atividades registradas.\n")
     time.sleep(2)
+
 
 def ranking():
     print("\n////// Ranking de Usuários //////")
@@ -159,6 +208,7 @@ def ranking():
     for i, usuario in enumerate(ranking_usuarios, 1):
         print(f"{i}. {usuario['username']} - {usuario['pontos']} pontos")
     time.sleep(1)
+
 
 def ajuda():
     print("\n////// AJUDA //////")
@@ -174,36 +224,37 @@ def ajuda():
     print("10. Sair: Encerra o programa.")
     time.sleep(2)
 
+
 def resgatar_recompensa():
     username = input("Digite o username do usuário: ")
     usuario = next((u for u in usuarios if u['username'] == username), None)
     if not usuario:
         print("Usuário não encontrado!\n")
         return
-    
+
     pontos_usuario = usuario['pontos']
-    
+
     print("\n////// Recompensas Disponíveis //////")
     for pontos, recompensa in recompensas:
         if pontos_usuario >= pontos:
             print(f"{pontos} pontos: {recompensa}")
-    
+
     if pontos_usuario < recompensas[0][0]:
         print("Você não tem pontos suficientes para resgatar nenhuma recompensa.\n")
         return
-    
+
     try:
         pontos_escolhidos = int(input("\nDigite a quantidade de pontos que deseja resgatar: "))
     except ValueError:
         print("Número inválido!\n")
         return
-    
+
     recompensa_encontrada = None
     for pontos, recompensa in recompensas:
         if pontos_escolhidos == pontos:
             recompensa_encontrada = recompensa
             break
-    
+
     if recompensa_encontrada:
         if pontos_usuario >= pontos_escolhidos:
             usuario['pontos'] -= pontos_escolhidos
@@ -214,6 +265,7 @@ def resgatar_recompensa():
     else:
         print("Recompensa não encontrada para a quantidade de pontos digitada.\n")
     time.sleep(1)
+
 
 def menu():
     while True:
@@ -232,7 +284,7 @@ def menu():
         if opcao == "10":
             print("Saindo do programa...")
             break
-        
+
         opcoes = {
             "1": cadastrar_usuario,
             "2": registrar_atividade,
@@ -248,5 +300,6 @@ def menu():
             opcoes[opcao]()
         else:
             print("Opção inválida!\n")
+
 
 menu()
