@@ -160,6 +160,7 @@ def registrar_atividade():
 
     usuario["pontos"] += pontos * quantidade
     usuario["atividades_realizadas"] += quantidade
+    usuario["pontos_acumulados"] = usuario.get("pontos_acumulados", 0) + (pontos * quantidade)
 
     atividades.append({
         "usuario": usuario["username"],
@@ -205,10 +206,33 @@ def listar_atividades():
 def ranking():
     print("\n////// Ranking de Usuários //////")
     ranking_usuarios = sorted(usuarios, key=lambda user: user['pontos'], reverse=True)
-    for i, usuario in enumerate(ranking_usuarios, 1):
-        print(f"{i}. {usuario['username']} - {usuario['pontos']} pontos")
+
+    posicao = 1
+    pontos_anterior = None
+
+    for i, usuario in enumerate(ranking_usuarios):
+        if usuario['pontos'] != pontos_anterior:
+            posicao = i + 1
+        print(f"{posicao}. {usuario['username']} - {usuario['pontos']} pontos")
+        pontos_anterior = usuario['pontos']
+
     time.sleep(1)
 
+
+def ranking_permanente():
+    print("\n////// Ranking Permanente de Usuários //////")
+    ranking_usuarios = sorted(usuarios, key=lambda user: user.get('pontos_acumulados', 0), reverse=True)
+
+    posicao = 1
+    pontos_anterior = None
+
+    for i, usuario in enumerate(ranking_usuarios):
+        if usuario.get('pontos_acumulados', 0) != pontos_anterior:
+            posicao = i + 1
+        print(f"{posicao}. {usuario['username']} - {usuario.get('pontos_acumulados', 0)} pontos acumulados")
+        pontos_anterior = usuario.get('pontos_acumulados', 0)
+
+    time.sleep(1)
 
 def ajuda():
     print("\n////// AJUDA //////")
@@ -279,10 +303,14 @@ def menu():
         print("7. Ranking de usuários")
         print("8. Ajuda")
         print("9. Resgatar recompensa")
-        print("10. Sair")
+        print("10. Ranking permanente")
+        print("11. Sair")
+
         opcao = input("Escolha uma opção: ")
-        if opcao == "10":
+
+        if opcao == "11":  # Saída do programa
             print("Saindo do programa...")
+            time.sleep(1)
             break
 
         opcoes = {
@@ -295,7 +323,9 @@ def menu():
             "7": ranking,
             "8": ajuda,
             "9": resgatar_recompensa,
+            "10": ranking_permanente,
         }
+
         if opcao in opcoes:
             opcoes[opcao]()
         else:
