@@ -1,89 +1,60 @@
-Green Money é um sistema de gamificação que incentiva a prática de atividades sustentáveis, recompensando os usuários com pontos que podem ser trocados por prêmios.
+# Aplicativo de realização de atividades sustentáveis
 
-FUNCIONALIDADES
+O projeto é um sistema de gamificação que incentiva a prática de atividades sustentáveis, recompensando os usuários com pontos que podem ser trocados por prêmios.
 
-1. Cadastro de usuários com verificação por código.
+## Funcionalidades
 
-2. Registro de atividades sustentáveis e acúmulo de pontos.
+- **Cadastro de Usuários**: Registro de novos usuários com verificação via código de confirmação.
+- **Registro de Atividades Sustentáveis**: Os usuários podem registrar suas ações sustentáveis e acumular pontos.
+- **Exclusão de Dados**: Possibilidade de excluir usuários e atividades registradas.
+- **Listagem de Dados**: Consulta de usuários e atividades cadastradas.
+- **Ranking de Usuários**: Exibição dos usuários com maior pontuação.
+- **Sistema de Recompensas**: Troca de pontos acumulados por prêmios.
+- **Notificações Automáticas**: Envio de alertas para usuários ao atingirem novos níveis ou desbloquearem recompensas.
+- **Ajuda**: Exibe informações sobre o sistema e como utilizá-lo.
 
-3. Exclusão de usuários e atividades.
+## Como Utilizar
 
-4. Listagem de usuários e atividades cadastradas.
+### Executar o Programa
+O sistema é executado diretamente pelo terminal. Para iniciá-lo, basta rodar o script Python correspondente.
 
-5. Ranking de usuários baseado nos pontos acumulados.
+### Cadastro de um Novo Usuário
+1. Escolha a opção **"Cadastrar novo usuário"**.
+2. Insira um nome de usuário e email.
+3. Defina uma senha que contenha pelo menos:
+   - 4 caracteres,
+   - 3 letras/números,
+   - 1 caractere especial.
+4. Confirme o código de verificação enviado ao email.
 
-6. Sistema de recompensas baseado na quantidade de pontos.
+### Registro de Atividades Sustentáveis
+1. Escolha a opção **"Registrar atividades sustentáveis"**.
+2. Selecione uma atividade predefinida ou insira uma nova.
+3. Informe quantas vezes a atividade foi realizada.
+4. Os pontos são atribuídos de acordo com a atividade e a quantidade realizada.
 
-7. Notificações automáticas para usuários ao atingirem novos níveis ou desbloquearem recompensas.
+### Consulta de Usuários e Atividades
+- **Lista de Usuários**: Exibe todos os usuários cadastrados e seus respectivos pontos.
+- **Lista de Atividades**: Mostra todas as atividades registradas pelos usuários.
 
+### Consulta do Ranking de Usuários
+- A opção **"Ranking de usuários"** exibe a classificação dos usuários ordenados por pontuação acumulada.
 
-COMO UTILIZAR:
+### Resgate de Recompensas
+- A opção **"Resgatar recompensa"** permite trocar os pontos acumulados por prêmios disponíveis no sistema.
 
-Executar o programa:
+### Encerramento do Programa
+- Selecionando **"Sair"**, a execução do sistema é finalizada.
 
-O sistema é executado no terminal. Basta rodar o script Python para iniciar o menu interativo.
+## Estrutura do Código
+O sistema é estruturado em diferentes funções para garantir modularidade e facilidade de manutenção:
 
-1) Cadastrar um novo usuário:
+- `cadastrar_usuario()`: Registra novos usuários e gerencia a verificação por código.
+- `registrar_atividade()`: Permite aos usuários cadastrarem atividades sustentáveis e acumularem pontos.
+- `listar_usuarios()`: Exibe a lista de usuários cadastrados com suas respectivas pontuações.
+- `listar_atividades()`: Exibe todas as atividades registradas no sistema.
+- `ranking()`: Ordena e exibe os usuários de acordo com sua pontuação.
+- `resgatar_recompensa()`: Permite a troca de pontos por recompensas.
+- `ajuda()`: Ajuda os novos usuários a utilizarem de maneira certa o sitema
+- `menu()`: Controla a interação do usuário por meio de um menu interativo no terminal.
 
-Escolha a opção 1. Cadastrar novo usuário.
-
-Insira um nome de usuário e email.
-
-Defina uma senha com pelo menos 4 caracteres, 3 letras/números e 1 caractere especial.
-
-Confirme o código de verificação enviado ao email.
-
-2) Registrar atividades sustentáveis:
-
-Escolha a opção 2. Registrar atividades sustentáveis.
-
-Selecione uma atividade predefinida ou insira uma nova.
-
-Informe quantas vezes a atividade foi realizada.
-
-O usuário recebe pontos de acordo com a atividade e quantidade realizada.
-
-3) Consultar usuários e atividades
-
-Lista de usuários exibe todos os usuários cadastrados e seus pontos.
-
-Lista de atividades exibe todas as atividades registradas.
-
-4) Consultar ranking de usuários
-
-Ranking de usuários exibe os usuários ordenados por pontuação.
-
-5) Resgatar recompensas
-
-Resgatar recompensa permite trocar pontos acumulados por prêmios.
-
-
-Sair do programa
-
-10. Sair encerra a execução do sistema.
-
-
-
-ESTRUTURA DO CÓDIGO
-
-O sistema está estruturado em diferentes funções para modularidade e facilidade de manutenção:
-
-cadastrar_usuario(): Cadastra novos usuários.
-
-registrar_atividade(): Registra atividades sustentáveis.
-
-listar_usuarios(): Exibe a lista de usuários cadastrados.
-
-listar_atividades(): Exibe a lista de atividades registradas.
-
-ranking(): Exibe o ranking de usuários.
-
-resgatar_recompensa(): Permite a troca de pontos por recompensas.
-
-menu(): Controla a interação do usuário no terminal.
-
-
-
-REQUISITOS
-
-Python 3.x
